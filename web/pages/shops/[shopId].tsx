@@ -30,8 +30,10 @@ export type Cart = Record<number, number | undefined>;
 const ShopPage: NextPage = () => {
   const router = useRouter();
   const { shopId } = router.query as { shopId: string };
-  const { data: shop, isLoading } = useQuery(["products", shopId], () =>
-    getShop(Number(shopId))
+  const { data: shop, isLoading } = useQuery(
+    ["products", shopId],
+    () => getShop(Number(shopId)),
+    { enabled: typeof shopId !== "undefined" }
   );
 
   const [cart, setCart] = useState<Cart>({});
@@ -115,8 +117,8 @@ const ShopPage: NextPage = () => {
       },
     },
     {
-      command: "checkout *",
-      callback: (a, b) => {
+      command: "checkout (cart)",
+      callback: () => {
         const isEmpty = Object.entries(cart).length === 0;
         if (isEmpty) {
           speakText("The cart is empty please add a product before checkout", {
@@ -157,28 +159,9 @@ const ShopPage: NextPage = () => {
     }
   }, [startListening, shop]);
 
-  useEffect(() => {
-    speakText("Hello", {
-      onStart: () => {
-        console.log("Hello");
-      },
-    });
-  }, []);
-
   // -------------------------------------------------------
 
-  if (isLoading || typeof shop === "undefined")
-    return (
-      <Center height="100vh">
-        <Spinner
-          thickness="4px"
-          speed="0.65s"
-          emptyColor="gray.200"
-          color="blue.500"
-          size="xl"
-        />
-      </Center>
-    );
+  if (isLoading || typeof shop === "undefined") return <LoaderSpinner />;
 
   const cartCost = Object.entries(cart).reduce<number>(
     (acc, [id, quantity]) =>
@@ -252,5 +235,19 @@ const ShopPage: NextPage = () => {
     </div>
   );
 };
+
+export function LoaderSpinner() {
+  return (
+    <Center height="100vh">
+      <Spinner
+        thickness="4px"
+        speed="0.65s"
+        emptyColor="gray.200"
+        color="blue.500"
+        size="xl"
+      />
+    </Center>
+  );
+}
 
 export default ShopPage;

@@ -120,7 +120,7 @@ async function createShops(prisma: PrismaClient) {
     data: [
       {
         name: "DMart",
-        address: "Pune, Maharashtra",
+        address: "Jammu",
         merchantName: "Radhakishan Damani",
         status: "open",
       },
@@ -132,13 +132,13 @@ async function createShops(prisma: PrismaClient) {
       },
       {
         name: "Metro",
-        address: "Mumbai, Maharashtra",
+        address: "Delhi",
         merchantName: "Arvind Mediratta",
         status: "close",
       },
       {
         name: "Reliance Marts",
-        address: "Mumbai, Maharashtra",
+        address: "Kolkata, West Bengal",
         merchantName: "Ambani",
         status: "open",
       },
