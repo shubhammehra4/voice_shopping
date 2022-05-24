@@ -1,0 +1,77 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table order_items {
+  orderId Int [not null]
+  productId Int [not null]
+  quantity Int [not null, default: 1]
+  order Order [not null]
+  product Product [not null]
+
+  indexes {
+    (orderId, productId) [pk]
+  }
+}
+
+Table orders {
+  id Int [pk, increment]
+  shippingAddress String [not null]
+  contactNumber String [not null]
+  status String [not null]
+  orderItems OrderItem [not null]
+  paymentId Int [unique, not null]
+  payment Payment [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table payments {
+  id Int [pk, increment]
+  orderId Int
+  order Order
+  status payment_status [not null]
+}
+
+Table products {
+  id Int [pk, increment]
+  shopId Int [not null]
+  name String [not null]
+  price Int [not null]
+  imageUrl String [not null]
+  status product_status [not null]
+  shop Shop [not null]
+  orderItems OrderItem [not null]
+}
+
+Table shops {
+  id Int [pk, increment]
+  name String [not null]
+  merchantName String [not null]
+  address String [not null]
+  status shop_status [not null]
+  products Product [not null]
+}
+
+Enum payment_status {
+  completed
+  pending
+}
+
+Enum product_status {
+  inStock
+  outOfStock
+}
+
+Enum shop_status {
+  open
+  close
+}
+
+Ref: OrderItem.orderId > Order.id [delete: Cascade]
+
+Ref: OrderItem.productId > Product.id [delete: Set Null]
+
+Ref: Order.paymentId - Payment.id [delete: Set Null]
+
+Ref: Product.shopId > Shop.id [delete: Cascade]

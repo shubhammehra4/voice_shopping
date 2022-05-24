@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  postgres_container:
+    container_name: postgresql
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: shopping
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+# Connect
+# Shell : psql postgres://postgres:postgres@127.0.0.1:5432/DB_NAME
+# PG_CLI : pgcli postgres://postgres:postgres@127.0.0.1:5432/DB_NAME

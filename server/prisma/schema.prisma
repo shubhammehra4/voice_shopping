@@ -1,0 +1,85 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+generator dbml {
+    provider = "prisma-dbml-generator"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model OrderItem {
+    orderId   Int     @map("order_id")
+    productId Int     @map("product_id")
+    quantity  Int     @default(1)
+    order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+    product   Product @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+    @@id([orderId, productId])
+    @@map("order_items")
+}
+
+model Order {
+    id              Int         @id @default(autoincrement())
+    shippingAddress String      @map("shipping_address") @db.VarChar
+    contactNumber   String      @map("contact_number") @db.VarChar
+    status          String      @db.VarChar
+    orderItems      OrderItem[]
+    paymentId       Int         @unique @map("payent_id")
+    payment         Payment     @relation(fields: [paymentId], references: [id], onDelete: SetNull)
+    createdAt       DateTime    @default(now()) @map("created_at")
+    updatedAt       DateTime    @updatedAt @map("updated_at")
+
+    @@map("orders")
+}
+
+model Payment {
+    id      Int            @id @default(autoincrement())
+    orderId Int?           @map("order_id")
+    order   Order?
+    status  payment_status
+
+    @@map("payments")
+}
+
+model Product {
+    id         Int            @id @default(autoincrement())
+    shopId     Int            @map("shop_id")
+    name       String         @db.VarChar(100)
+    price      Int
+    imageUrl   String         @map("image_url")
+    status     product_status
+    shop       Shop           @relation(fields: [shopId], references: [id], onDelete: Cascade)
+    orderItems OrderItem[]
+
+    @@map("products")
+}
+
+model Shop {
+    id           Int         @id @default(autoincrement())
+    name         String      @db.VarChar(100)
+    merchantName String      @map("merchant_name") @db.VarChar(100)
+    address      String      @db.VarChar
+    status       shop_status
+    products     Product[]
+
+    @@map("shops")
+}
+
+enum payment_status {
+    completed
+    pending
+}
+
+enum product_status {
+    inStock     @map("in_stock")
+    outOfStock  @map("out_of_stock")
+}
+
+enum shop_status {
+    open
+    close
+}
