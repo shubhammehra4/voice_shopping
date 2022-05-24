@@ -12,3 +12,14 @@
 - GET /orders - Get all orders (not used in application)
 - GET /orders/{contactNumber} - Get orders of a user (not used in application)
 - POST /orders/payment - Update payment status of an order
+
+Activites Example
+
+- Decide of DB Schema and entities and ER diagrams
+- Learn and implement API server in node with fastify/express
+- Test the API with Postman
+- Decide Frontent design and structure
+- Learn about speech recognition ...
+- Implement UI and functionality
+- Integration Test the application
+- deploy and test
