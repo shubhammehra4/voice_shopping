@@ -1,12 +1,3 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import { useEffect, useRef } from "react";
-import { useQuery } from "react-query";
-import getShops from "../data/getShops";
-import styles from "../styles/Home.module.css";
-import speakText from "../utils/speak";
-import { BsShopWindow } from "react-icons/bs";
-import Link from "next/link";
 import {
   Box,
   Flex,
@@ -18,13 +9,22 @@ import {
   Tag,
   Text,
 } from "@chakra-ui/react";
+import type { NextPage } from "next";
+import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useRef } from "react";
+import { BsShopWindow } from "react-icons/bs";
 import { GiShoppingCart } from "react-icons/gi";
+import { useQuery } from "react-query";
 import SpeechRecognition, {
   SpeechRecognitionOptions,
   useSpeechRecognition,
 } from "react-speech-recognition";
+import getShops from "../data/getShops";
+import styles from "../styles/Home.module.css";
+import speakText from "../utils/speak";
 import { LoaderSpinner } from "./shops/[shopId]";
-import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
   const router = useRouter();
