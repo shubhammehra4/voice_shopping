@@ -10,5 +10,5 @@ export type CreateOrder = {
 };
 
 export default function createOrder(input: CreateOrder): Promise<boolean> {
-  return server.post("/orders", input).then((res) => res.status === 201);
+  return server.post("/orders", input).then((res) => res.data);
 }
