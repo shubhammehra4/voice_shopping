@@ -24,8 +24,10 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { LoaderSpinner } from "./shops/[shopId]";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
+  const router = useRouter();
   const { data: shops, isLoading } = useQuery("shops", getShops);
 
   /**
@@ -36,8 +38,11 @@ const Home: NextPage = () => {
     {
       command: "visit *",
       callback: (shopName: string) => {
+        console.log(shopName);
         const shop = shops?.find(
-          (shop) => shop.name.toLowerCase() === shopName.toLowerCase()
+          (shop) =>
+            shop.name.toLowerCase().replaceAll(" ", "") ===
+            shopName.toLowerCase().replaceAll(" ", "")
         );
 
         if (typeof shop === "undefined") {
@@ -45,7 +50,15 @@ const Home: NextPage = () => {
             onStart: stopListening,
             onEnd: () => startListening({ continuous: true }),
           });
+          return;
         }
+
+        speakText(`Visiting, ${shop.name}`, {
+          onStart: stopListening,
+          onEnd: () => {
+            router.push(`/shops/${shop.id}`);
+          },
+        });
       },
     },
   ];
