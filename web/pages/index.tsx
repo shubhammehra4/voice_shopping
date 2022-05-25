@@ -23,32 +23,30 @@ import SpeechRecognition, {
   SpeechRecognitionOptions,
   useSpeechRecognition,
 } from "react-speech-recognition";
+import { LoaderSpinner } from "./shops/[shopId]";
 
 const Home: NextPage = () => {
-  const { data: shops } = useQuery("shops", getShops);
+  const { data: shops, isLoading } = useQuery("shops", getShops);
 
-  const resetListening = () => {
-    SpeechRecognition.stopListening();
-
-    setTimeout(() => SpeechRecognition.startListening(), 300);
-  };
-
-  const startListening = () => {
-    SpeechRecognition.startListening();
-  };
-
+  /**
+   * Speech
+   */
+  const { stopListening, startListening } = SpeechRecognition;
   const commands: SpeechRecognitionOptions["commands"] = [
     {
-      command: "hello (shop mart)",
-      callback: () => {
-        speakText("hello shubham, to repeat say repeat", {
-          onEnd: resetListening,
-        });
+      command: "visit *",
+      callback: (shopName: string) => {
+        const shop = shops?.find(
+          (shop) => shop.name.toLowerCase() === shopName.toLowerCase()
+        );
+
+        if (typeof shop === "undefined") {
+          speakText("No Shop with the name found, please try again!", {
+            onStart: stopListening,
+            onEnd: () => startListening({ continuous: true }),
+          });
+        }
       },
-    },
-    {
-      command: "repeat",
-      callback: resetListening,
     },
   ];
 
@@ -57,26 +55,25 @@ const Home: NextPage = () => {
     clearTranscriptOnListen: true,
   });
 
-  // const stopListening = () => {
-  //   SpeechRecognition.stopListening();
-  // };
+  const isFirstFullRender = useRef(true);
+  useEffect(() => {
+    if (typeof shops !== "undefined" && isFirstFullRender) {
+      isFirstFullRender.current = false;
+      speakText(
+        `Hello, Welcome to Shop Mart the one stop solution for your shopping needs.
+        Choose from the following shops ${shops.reduce<string>(
+          (acc, shop) => acc + shop.name + ", ",
+          ""
+        )}.
+        To Choose a shop say, "Visit with shop name"`,
+        { onEnd: () => startListening({ continuous: true }) }
+      );
+    }
+  }, [shops, startListening]);
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     startListening();
-  //   }, 2000);
-  // }, []);
+  // -------------------------------------------------------
 
-  // useEffect(() => {
-  //   const button = document.querySelector<HTMLButtonElement>("#activity");
-
-  //   const speakEvent = setTimeout(() => {
-  //     button?.click();
-  //     speakText("hello shubham");
-  //   }, 1000);
-
-  //   return () => clearTimeout(speakEvent);
-  // }, []);
+  if (isLoading || typeof shops === "undefined") return <LoaderSpinner />;
 
   return (
     <div className={styles.container}>
@@ -90,7 +87,7 @@ const Home: NextPage = () => {
         <div className={styles.hero}>
           <BsShopWindow color="#0070f3" />
           <h1 className={styles.title}>
-            Shop <span>Mart</span> {listening ? "speak" : ""}
+            Shop <span>Mart</span>
           </h1>
         </div>
         <h3 className={styles.description}>
@@ -98,38 +95,31 @@ const Home: NextPage = () => {
         </h3>
 
         <Grid gap={3} mb="8">
-          {shops &&
-            shops.map((shop) => (
-              <Link key={shop.id} href={`/shops/${shop.id}`} passHref>
-                <LinkBox cursor="pointer">
-                  <Box className={styles.card} minWidth="350px">
-                    <Flex justifyContent="space-between" w="full">
-                      <LinkOverlay>
-                        <Flex gap={3}>
-                          <Icon
-                            boxSize={6}
-                            color="#0070f3"
-                            as={GiShoppingCart}
-                          />
-                          <Heading fontSize="2xl">{shop.name}</Heading>
-                        </Flex>
-                      </LinkOverlay>
-                      <Tag
-                        colorScheme={
-                          shop.status === "open" ? "green" : "orange"
-                        }
-                        variant="outline"
-                      >
-                        {shop.status}
-                      </Tag>
-                    </Flex>
+          {shops.map((shop) => (
+            <Link key={shop.id} href={`/shops/${shop.id}`} passHref>
+              <LinkBox cursor="pointer">
+                <Box className={styles.card} minWidth="350px">
+                  <Flex justifyContent="space-between" w="full">
+                    <LinkOverlay>
+                      <Flex gap={3}>
+                        <Icon boxSize={6} color="#0070f3" as={GiShoppingCart} />
+                        <Heading fontSize="2xl">{shop.name}</Heading>
+                      </Flex>
+                    </LinkOverlay>
+                    <Tag
+                      colorScheme={shop.status === "open" ? "green" : "orange"}
+                      variant="outline"
+                    >
+                      {shop.status}
+                    </Tag>
+                  </Flex>
 
-                    <Text>{shop.merchantName}</Text>
-                    <Text mt="4">{shop.address}</Text>
-                  </Box>
-                </LinkBox>
-              </Link>
-            ))}
+                  <Text>{shop.merchantName}</Text>
+                  <Text mt="4">{shop.address}</Text>
+                </Box>
+              </LinkBox>
+            </Link>
+          ))}
         </Grid>
       </main>
     </div>
