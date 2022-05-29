@@ -37,10 +37,9 @@ model Order {
 }
 
 model Payment {
-    id      Int            @id @default(autoincrement())
-    orderId Int?           @map("order_id")
-    order   Order?
-    status  payment_status
+    id     Int            @id @default(autoincrement())
+    Order  Order?
+    status payment_status
 
     @@map("payments")
 }

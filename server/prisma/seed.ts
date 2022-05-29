@@ -57,7 +57,7 @@ async function createProducts(prisma: PrismaClient) {
       },
 
       {
-        name: "Iphone 12",
+        name: "Iphone",
         price: 20000,
         shopId: 2,
         status: "inStock",
@@ -65,21 +65,21 @@ async function createProducts(prisma: PrismaClient) {
           "https://m.media-amazon.com/images/I/61eDXs9QFNL._SL1500_.jpg",
       },
       {
-        name: "Galaxy S22",
+        name: "Galaxy",
         price: 10000,
         shopId: 2,
         status: "inStock",
         imageUrl: "https://m.media-amazon.com/images/I/71PvHfU+pwL._SX679_.jpg",
       },
       {
-        name: "OnePlus 12",
+        name: "OnePlus",
         price: 10000,
         shopId: 2,
         status: "inStock",
         imageUrl: "https://m.media-amazon.com/images/I/61mIUCd-37L._SX679_.jpg",
       },
       {
-        name: "Galaxy Note 12",
+        name: "Galaxy Note",
         price: 30000,
         shopId: 2,
         status: "outOfStock",
@@ -88,7 +88,7 @@ async function createProducts(prisma: PrismaClient) {
       },
 
       {
-        name: "Apples (pack of 6)",
+        name: "Apple",
         price: 300,
         shopId: 4,
         status: "inStock",
@@ -96,7 +96,7 @@ async function createProducts(prisma: PrismaClient) {
           "https://www.bigbasket.com/media/uploads/p/xxl/40033819-2_6-fresho-apple-shimla.jpg",
       },
       {
-        name: "Mangos (pack of 8)",
+        name: "Mango",
         price: 500,
         shopId: 4,
         status: "inStock",
@@ -104,7 +104,7 @@ async function createProducts(prisma: PrismaClient) {
           "https://www.bigbasket.com/media/uploads/p/xxl/40194855_1-fresho-mango-alphonso.jpg",
       },
       {
-        name: "Dozen Bananas",
+        name: "Banana",
         price: 200,
         shopId: 4,
         status: "inStock",

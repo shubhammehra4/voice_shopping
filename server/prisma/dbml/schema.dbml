@@ -28,8 +28,7 @@ Table orders {
 
 Table payments {
   id Int [pk, increment]
-  orderId Int
-  order Order
+  Order Order
   status payment_status [not null]
 }
 

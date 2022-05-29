@@ -65,13 +65,13 @@ const CheckoutPage: NextPage = () => {
     });
 
     toast({
-      title: "Order places",
+      title: "Order placed",
       status: "success",
       duration: 2000,
       isClosable: true,
     });
 
-    speakText("Congratulations your order is placed", {
+    speakText("Congratulations! Your order is placed", {
       onEnd: () => router.push("/"),
     });
   }
@@ -98,7 +98,7 @@ const CheckoutPage: NextPage = () => {
         setState((state) => ({ ...state, contactNumber: number }));
 
         speakText(
-          `To confirm your order of value ${cartCost} rupees. Shipping address. ${state.shippingAddress}. Contact number, ${state.contactNumber}. Say "Confirm Order"`,
+          `To confirm your order of value ${cartCost} rupees. Shipping address. ${state.shippingAddress}. Contact number, ${number}. Say "Confirm Order"`,
           {
             onStart: stopListening,
             onEnd: () => startListening({ continuous: true }),
@@ -138,7 +138,7 @@ const CheckoutPage: NextPage = () => {
         router.push("/");
       }
 
-      if (customerDetails.shippingAddress) {
+      if (!customerDetails.shippingAddress) {
         speakText(
           `Please add your Shipping Address by saying, "my address is "`,
           { onEnd: () => startListening({ continuous: true }) }
@@ -187,6 +187,24 @@ const CheckoutPage: NextPage = () => {
           confirmCheckout={confirmCheckout}
           isLoading={createOrderMutation.isLoading}
         />
+
+        <Box my="10" maxW="600px" mx="auto" px="5">
+          <Heading fontSize="xl" my="5">
+            Details
+          </Heading>
+
+          <Stack spacing="8" fontSize="lg">
+            <Box>
+              <Text fontWeight="semibold">Shipping Address</Text>
+              <Text>{state.shippingAddress || "NA"}</Text>
+            </Box>
+
+            <Box>
+              <Text fontWeight="semibold">Contact Number</Text>
+              <Text>{state.contactNumber || "NA"}</Text>
+            </Box>
+          </Stack>
+        </Box>
 
         <Box mt="10" maxW="600px" mx="auto" px="5">
           <Heading fontSize="xl" my="5">

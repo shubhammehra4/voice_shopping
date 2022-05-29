@@ -74,7 +74,7 @@ const Home: NextPage = () => {
       isFirstFullRender.current = false;
       speakText(
         `Hello, Welcome to Shop Mart the one stop solution for your shopping needs.
-        Choose from the following shops ${shops.reduce<string>(
+        Choose from the following shops. ${shops.reduce<string>(
           (acc, shop) => acc + shop.name + ", ",
           ""
         )}.

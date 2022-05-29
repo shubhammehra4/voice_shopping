@@ -32,7 +32,6 @@ CREATE TABLE "orders" (
 -- CreateTable
 CREATE TABLE "payments" (
     "id" SERIAL NOT NULL,
-    "order_id" INTEGER,
     "status" "payment_status" NOT NULL,
 
     CONSTRAINT "payments_pkey" PRIMARY KEY ("id")
