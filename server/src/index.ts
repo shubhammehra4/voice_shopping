@@ -28,6 +28,10 @@ app.addHook("onClose", (instance, done) => {
   done();
 });
 
-app.listen(process.env.PORT || 5000, () => {
-  app.log.info(`Server started listenning on ${process.env.PORT || 3000}`);
+app.listen(process.env.PORT || 5000, process.env.HOST || "0.0.0.0", () => {
+  app.log.info(
+    `Server started listenning on ${process.env.PORT || 3000} with host ${
+      process.env.HOST || "0.0.0.0"
+    }`
+  );
 });
