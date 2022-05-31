@@ -1,9 +1,13 @@
+# Database
+
+<img src="./screenshots/db.png" />
+
 # Server
 
 `server/prisma/migrations/20220520174801_init_db/migration.sql` -> Path to SQL Schema
 
 `server/prisma/seed.ts` -> Path to DB seed data (please customize shops, names and items for jammu)
-                                                example: Rawal Pindi Sweet Shop etc.
+example: Rawal Pindi Sweet Shop etc.
 
 ## Api Endpoints
 
