@@ -117,7 +117,7 @@ const ShopPage: NextPage = () => {
       },
     },
     {
-      command: "checkout (cart)",
+      command: "checkout",
       callback: () => {
         const isEmpty = Object.entries(cart).length === 0;
         if (isEmpty) {
@@ -153,7 +153,7 @@ const ShopPage: NextPage = () => {
       isFirstFullRender.current = false;
 
       speakText(
-        `Welcome to ${shop.name}. To list products say, "list products". To add or remove a product from cart say, "add or remove with productName. To checkout say, "checkout cart". To go back say, "go back"`,
+        `Welcome to ${shop.name}. To list products say, "list products". To add or remove a product from cart say, "add or remove with productName. To checkout say, "checkout". To go back say, "go back"`,
         { onEnd: () => startListening({ continuous: true }) }
       );
     }
